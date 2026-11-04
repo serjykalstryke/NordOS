@@ -38,6 +38,15 @@ Start with the ordinary Cutefish session in a VM as the recommended desktop base
 
 Develop conversational first-run desktop/software selection separately from normal desktop use. GNOME and KDE Plasma are intended alternatives; their package selection, session setup, assistant entry point, and application-control integration need their own validation. Keep the assistant's system-state tools separate from desktop-specific adapters so they can be shared across these environments.
 
+## Snap application discovery
+
+Build the toolkit with its Snap integration commit recorded in `components.json`
+(`integration_commit`, a post-baseline change), or a descendant containing that
+change. The historical `baseline_commit` remains the original fork snapshot.
+See [Snap desktop integration](SNAP_SUPPORT.md) for the source change, runtime
+requirements, and validation steps. Changing the core checkout alone does not
+update the toolkit library used by the launcher.
+
 ## Distribution tooling
 
 The packaging repository contains Debian package definitions and a Debian live-build ISO configuration. Its existing image configuration consumes upstream Cutefish packages. NordOS package sources, branding, signing, update channels, and image publication still need design and implementation before a NordOS image can be produced.
