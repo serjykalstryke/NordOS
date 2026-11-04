@@ -1,14 +1,16 @@
 # NordOS
 
-An operating-system project built around a polished conversational workspace: talk to the computer to use applications, change the interface, install software, and create new tools.
+An operating-system project with an attractive default desktop and an integrated conversational assistant—a super-powered Spotlight for finding things, controlling applications, understanding the system, and making changes.
 
-NordOS is intended to support both its conversational default workspace and optional traditional or custom desktop interfaces. Over time, inherited components will be replaced one at a time with NordOS-owned native implementations, keeping a usable system throughout the transition.
+The first-run chat helps users select their initial desktop and software. NordOS recommends its default experience while offering alternatives such as GNOME and KDE Plasma. Everyday use starts in the selected desktop, with a compact assistant that can expand into a full chat window for longer tasks.
+
+The assistant starts with screenshot, keyboard, mouse, and window-control capabilities, then grows direct tools for reading system state and hardware and performing native system actions. Over time, inherited components will be replaced one at a time with NordOS-owned native implementations, keeping a usable system throughout the transition.
 
 ## Current foundation
 
 This repository is a fork of **[Cutefish core](https://github.com/cutefishos/cutefish-core)**, renamed NordOS. It currently contains the inherited session and system-services code plus the NordOS project documents. The original component instructions are preserved in [README.Cutefish.md](README.Cutefish.md).
 
-The conversational shell, agent runtime, custom-interface generation, and NordOS distribution image are planned work. Their direction is recorded in [docs/VISION.md](docs/VISION.md).
+The first-run setup experience, integrated assistant, system-state tools, alternative-desktop integration, and NordOS distribution image are planned work. Their direction is recorded in [docs/VISION.md](docs/VISION.md).
 
 **Source setup status:** 9 component forks are verified. Another 13 components are inventoried and pinned to upstream commits; their forks are pending because GitHub temporarily blocked further repository creation.
 
@@ -60,10 +62,11 @@ The inventory captures the starting commits on 2026-11-04. Forks keep their upst
 ## First implementation direction
 
 1. Reproduce the upstream desktop in a development VM.
-2. Build the conversational shell as an application within that working desktop.
-3. Add useful system actions and application control with visible results.
-4. Offer the shell as a selectable session, then evaluate it as the default.
-5. Replace inherited components progressively while preserving working interfaces.
+2. Prototype a Spotlight-style assistant with an expandable chat window in that desktop.
+3. Connect screenshot/input control and add structured system-state and hardware queries.
+4. Add useful native system actions and application control with visible results.
+5. Build conversational first-run desktop/software selection and test GNOME/KDE alternatives.
+6. Replace inherited components progressively while preserving working interfaces.
 
 The existing upstream Debian 13 build path is the initial development baseline. The long-term distribution base, implementation languages, and model providers remain open design decisions.
 

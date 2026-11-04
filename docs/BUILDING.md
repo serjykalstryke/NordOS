@@ -1,6 +1,6 @@
 # Development and build baseline
 
-The first milestone is to reproduce a working Cutefish desktop in a development VM, then prototype the NordOS conversational shell inside it.
+The first milestone is to reproduce a working Cutefish desktop in a development VM, then prototype the integrated NordOS assistant inside it.
 
 The upstream project currently develops and tests against Debian 13. Its complete build instructions, dependency list, component ordering, and session setup are in [cutefishos/getting-started](https://github.com/cutefishos/getting-started). The package and live-image build path is in [cutefishos/packaging](https://github.com/cutefishos/packaging).
 
@@ -34,7 +34,9 @@ git -C cutefish-core remote add upstream https://github.com/cutefishos/cutefish-
 
 Follow the upstream build guide for the exact dependency order and commands. The toolkit and its pinned Skia sources come first, followed by the framework and the components that depend on them. The current source build uses `/usr` as its install prefix. The computer-use component uses Cargo; the other application and desktop components use CMake.
 
-Start with the ordinary Cutefish session in a VM. Add the conversational shell as an application before changing login or session defaults. Keep a working graphical session available while developing its replacement.
+Start with the ordinary Cutefish session in a VM as the recommended desktop baseline. Add the integrated assistant as an application with a global entry point and an expandable chat window. The selected desktop remains the everyday workspace.
+
+Develop conversational first-run desktop/software selection separately from normal desktop use. GNOME and KDE Plasma are intended alternatives; their package selection, session setup, assistant entry point, and application-control integration need their own validation. Keep the assistant's system-state tools separate from desktop-specific adapters so they can be shared across these environments.
 
 ## Distribution tooling
 
