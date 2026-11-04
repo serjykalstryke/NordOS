@@ -1,0 +1,251 @@
+{
+  "project": "NordOS",
+  "snapshot_date": "2026-11-04",
+  "owner": "serjykalstryke",
+  "upstream_owner": "cutefishos",
+  "project_repository": "https://github.com/serjykalstryke/NordOS",
+  "repositories": [
+    {
+      "name": "cutefish-core",
+      "description": "The Cutefish session, system services and their helpers",
+      "upstream_url": "https://github.com/cutefishos/cutefish-core",
+      "fork_url": "https://github.com/serjykalstryke/NordOS",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "ecaf8b16a60d82e1dc86df9626e268eaf427cca8",
+      "baseline_source": "fork",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "cutefish-toolkit",
+      "description": "The UI toolkit of the Cutefish desktop: a Wayland client toolkit drawing with Skia",
+      "upstream_url": "https://github.com/cutefishos/cutefish-toolkit",
+      "fork_url": "https://github.com/serjykalstryke/cutefish-toolkit",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "4cce782de1c824ea4a46989ccfd6404466c5e265",
+      "baseline_source": "fork",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "filemanager",
+      "description": "The file manager of the Cutefish desktop",
+      "upstream_url": "https://github.com/cutefishos/filemanager",
+      "fork_url": "https://github.com/serjykalstryke/filemanager",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "8f9da407826f0d27da45c6916a0d98b0cb1a9f53",
+      "baseline_source": "fork",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "cutefish-compositor",
+      "description": "The Cutefish Wayland compositor, with window management, the desktop shell and the lock screen",
+      "upstream_url": "https://github.com/cutefishos/cutefish-compositor",
+      "fork_url": "https://github.com/serjykalstryke/cutefish-compositor",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "97118a8094477ca535b033826f4ed1cf50407bf0",
+      "baseline_source": "fork",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "settings",
+      "description": "The System Settings application of the Cutefish desktop",
+      "upstream_url": "https://github.com/cutefishos/settings",
+      "fork_url": "https://github.com/serjykalstryke/settings",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "1012d911d0a02932c359076f522947a216467a29",
+      "baseline_source": "fork",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "wallpapers",
+      "description": "The Cutefish system wallpapers",
+      "upstream_url": "https://github.com/cutefishos/wallpapers",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "ba6fbf6bd96536bbd9ef058fcb974b610dc0ca7b",
+      "baseline_source": "upstream",
+      "github_reported_license": "NOASSERTION"
+    },
+    {
+      "name": "terminal",
+      "description": "A terminal emulator for Cutefish",
+      "upstream_url": "https://github.com/cutefishos/terminal",
+      "fork_url": "https://github.com/serjykalstryke/terminal",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "aae85843ffd3f1c68cc065ca9ef2302a15365853",
+      "baseline_source": "fork",
+      "github_reported_license": "GPL-3.0"
+    },
+    {
+      "name": "cutefish-dm",
+      "description": "The Cutefish display manager",
+      "upstream_url": "https://github.com/cutefishos/cutefish-dm",
+      "fork_url": "https://github.com/serjykalstryke/cutefish-dm",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "77e122903da3d8a1afbd80a9f240b0f318539b17",
+      "baseline_source": "fork",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "icons",
+      "description": "The Cutefish icon theme, based on Colloid",
+      "upstream_url": "https://github.com/cutefishos/icons",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "a38be51fe7f6a87a9b2bb4928f8d96134a066848",
+      "baseline_source": "upstream",
+      "github_reported_license": "GPL-3.0"
+    },
+    {
+      "name": "getting-started",
+      "description": "Build and install the Cutefish desktop from source",
+      "upstream_url": "https://github.com/cutefishos/getting-started",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "870ec4493d9c8713c95e32f2c6b88dd383d2bea7",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "cutefish-framework",
+      "description": "Shared system APIs for Cutefish components and applications",
+      "upstream_url": "https://github.com/cutefishos/cutefish-framework",
+      "fork_url": "https://github.com/serjykalstryke/cutefish-framework",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "19712540d65ef7c270b4e937e3af674b860a0265",
+      "baseline_source": "fork",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "text-editor",
+      "description": "A plain-text editor for Cutefish",
+      "upstream_url": "https://github.com/cutefishos/text-editor",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "fd51b28872db13548bfdd9223b06c916d65dbdef",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "qt-plugins",
+      "description": "Makes Qt apps at home in Cutefish: dark mode, system fonts and icons, the Cutefish file chooser, consistent touchpad scrolling, and SVG/HEIF/AVIF/JPEG XL images",
+      "upstream_url": "https://github.com/cutefishos/qt-plugins",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "8d79992d37764b6e487b7e7a16c83eab6f4b69ee",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "calculator",
+      "description": null,
+      "upstream_url": "https://github.com/cutefishos/calculator",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "7994fab9ca65098305c7d1e5b2f0affcd7d9189e",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "video-player",
+      "description": "The video player of the Cutefish desktop, built on libmpv",
+      "upstream_url": "https://github.com/cutefishos/video-player",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "33db5e6c2db90088895962084e57731d03d7d85a",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "plymouth-theme",
+      "description": "Cutefish boot background.",
+      "upstream_url": "https://github.com/cutefishos/plymouth-theme",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "8fbc39b1dac39192d8c21ae9ca876f1b528adeaf",
+      "baseline_source": "upstream",
+      "github_reported_license": null
+    },
+    {
+      "name": "cutefish-installer",
+      "description": "The installer of Cutefish, which copies the live system onto a disk",
+      "upstream_url": "https://github.com/cutefishos/cutefish-installer",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "0cb8ef507f7be0f3dc26ce56d0a168f9210881a5",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "packaging",
+      "description": "Debian packages and the live ISO of the Cutefish desktop, built and published by GitHub Actions",
+      "upstream_url": "https://github.com/cutefishos/packaging",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "4bf91872f80f63d1e7c2c9a888ba92b20fb6f3d4",
+      "baseline_source": "upstream",
+      "github_reported_license": null
+    },
+    {
+      "name": "cutefish-computer-use",
+      "description": "An MCP server that lets agent apps see and use the Cutefish desktop, once the user allows it",
+      "upstream_url": "https://github.com/cutefishos/cutefish-computer-use",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "fac87113b59cd5e5b067e11de48163aa24e4a9bf",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "xdg-desktop-portal-cutefish",
+      "description": "The xdg-desktop-portal backend for Cutefish",
+      "upstream_url": "https://github.com/cutefishos/xdg-desktop-portal-cutefish",
+      "fork_url": "https://github.com/serjykalstryke/xdg-desktop-portal-cutefish",
+      "status": "forked",
+      "default_branch": "main",
+      "baseline_commit": "19765bcce46880e36a8cfb6b7bdcc6bd09076b59",
+      "baseline_source": "fork",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "system-monitor",
+      "description": "The system monitor of the Cutefish desktop",
+      "upstream_url": "https://github.com/cutefishos/system-monitor",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "74068cb81393debe3ab1eaf166be064087f40d64",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    },
+    {
+      "name": "calendar",
+      "description": "The calendar of the Cutefish desktop",
+      "upstream_url": "https://github.com/cutefishos/calendar",
+      "fork_url": null,
+      "status": "pending_github_creation_limit",
+      "default_branch": "main",
+      "baseline_commit": "aa74cb66e9f6204c50452071caa51264e40b5a5b",
+      "baseline_source": "upstream",
+      "github_reported_license": "BSD-3-Clause"
+    }
+  ]
+}
