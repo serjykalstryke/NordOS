@@ -25,6 +25,7 @@
       "default_branch": "main",
       "baseline_commit": "4cce782de1c824ea4a46989ccfd6404466c5e265",
       "baseline_source": "fork",
+      "integration_commit": "6818997ba8e01907c8f7cdd5f9508f556e4777e9",
       "github_reported_license": "BSD-3-Clause"
     },
     {
