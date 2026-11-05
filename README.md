@@ -72,6 +72,7 @@ The existing upstream Debian 13 build path is the initial development baseline. 
 
 ## Project notes
 
+- [GTK system appearance bridge](examples/gtk-system-style/README.md) is a reversible working prototype that makes GTK 3 and GTK 4/libadwaita apps inherit Cutefish's system appearance. It records the running-app refresh limitation and the path toward native service integration.
 - [Snap desktop integration](docs/SNAP_SUPPORT.md) documents the toolkit change for discovering Snap applications, its runtime requirements, and validation steps.
 - [MSI Raider audio workaround](https://github.com/serjykalstryke/msi-raider-linux-audio-fix) is a separately verified hardware repair. It is hardware-specific and is not installed globally by this repository.
 - This repository retains the upstream core [BSD-3-Clause license](LICENSE). Each other component and its bundled dependencies retains its own license and attribution.
