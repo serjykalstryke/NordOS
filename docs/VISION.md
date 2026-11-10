@@ -1,10 +1,12 @@
 # NordOS vision
 
+The [design bible](DESIGN_BIBLE.md) and [project README](../README.md) are the current consolidated direction. This page retains earlier implementation sketches; setup, assistant surfaces, desktop alternatives, and replacement mechanisms remain proposals. Current upstream Cutefish work takes priority.
+
 NordOS is an operating-system project with an attractive default desktop and an integrated conversational assistant. The desktop should work comfortably on its own, while the assistant provides a fast way to find things, control applications, understand the system, and make changes.
 
 ## First-run setup
 
-The initial setup experience is a conversation that helps the user choose a starting environment and software.
+A proposed first-run experience offers conversational help with choosing a starting environment and software. Ordinary graphical setup must remain complete without requiring AI engagement.
 
 - Recommend the NordOS default desktop and a useful default application set.
 - Ask what the person wants to do with the computer and tailor the software selection to those needs.
@@ -15,6 +17,8 @@ The initial setup experience is a conversation that helps the user choose a star
 The recommended desktop provides the most integrated starting experience. Alternative desktop environments are part of the intended product direction; their installation and integration still need implementation and testing.
 
 ## Everyday use: a super-powered Spotlight
+
+NordOS is AI native without forcing AI engagement. Ordinary search should find and launch applications directly. Questions should receive context-aware answers, with clarification when necessary. Relevant current system state should inform reliable and safe changes through managed system interfaces.
 
 After setup, the normal starting point is the selected desktop. A system-wide shortcut opens a compact assistant that combines search, launching, commands, and conversation.
 
