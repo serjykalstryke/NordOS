@@ -203,7 +203,7 @@ This repository is a fork of **[Cutefish core](https://github.com/cutefishos/cut
 
 The first-run setup experience, integrated assistant, system-state tools, alternative-desktop integration, and NordOS distribution image are planned work. Their direction is recorded in [docs/VISION.md](docs/VISION.md).
 
-**Source setup status:** 9 component forks are verified. Another 13 components are inventoried and pinned to upstream commits; their forks are pending because GitHub temporarily blocked further repository creation.
+**Source setup status:** 19 of the original 22 component forks are verified as of November 10, 2026. Wallpapers, system-monitor, and calendar remain pinned to upstream commits while GitHub rejects further creation attempts. The current packaging pipeline also includes cutefish-webkit, which needs a separate source and build inventory entry. See [the initial release plan](docs/INITIAL_RELEASE.md).
 
 ## Repository guides
 
@@ -238,17 +238,17 @@ The inventory captures the starting commits on 2026-11-04. Forks keep their upst
 | wallpapers | [upstream](https://github.com/cutefishos/wallpapers) | Pending GitHub creation limit | NOASSERTION |
 | terminal | [upstream](https://github.com/cutefishos/terminal) | [terminal](https://github.com/serjykalstryke/terminal) | GPL-3.0 |
 | cutefish-dm | [upstream](https://github.com/cutefishos/cutefish-dm) | [cutefish-dm](https://github.com/serjykalstryke/cutefish-dm) | BSD-3-Clause |
-| icons | [upstream](https://github.com/cutefishos/icons) | Pending GitHub creation limit | GPL-3.0 |
-| getting-started | [upstream](https://github.com/cutefishos/getting-started) | Pending GitHub creation limit | BSD-3-Clause |
+| icons | [upstream](https://github.com/cutefishos/icons) | [icons](https://github.com/serjykalstryke/icons) | GPL-3.0 |
+| getting-started | [upstream](https://github.com/cutefishos/getting-started) | [getting-started](https://github.com/serjykalstryke/getting-started) | BSD-3-Clause |
 | cutefish-framework | [upstream](https://github.com/cutefishos/cutefish-framework) | [cutefish-framework](https://github.com/serjykalstryke/cutefish-framework) | BSD-3-Clause |
-| text-editor | [upstream](https://github.com/cutefishos/text-editor) | Pending GitHub creation limit | BSD-3-Clause |
-| qt-plugins | [upstream](https://github.com/cutefishos/qt-plugins) | Pending GitHub creation limit | BSD-3-Clause |
-| calculator | [upstream](https://github.com/cutefishos/calculator) | Pending GitHub creation limit | BSD-3-Clause |
-| video-player | [upstream](https://github.com/cutefishos/video-player) | Pending GitHub creation limit | BSD-3-Clause |
-| plymouth-theme | [upstream](https://github.com/cutefishos/plymouth-theme) | Pending GitHub creation limit | See upstream files |
-| cutefish-installer | [upstream](https://github.com/cutefishos/cutefish-installer) | Pending GitHub creation limit | BSD-3-Clause |
-| packaging | [upstream](https://github.com/cutefishos/packaging) | Pending GitHub creation limit | See upstream files |
-| cutefish-computer-use | [upstream](https://github.com/cutefishos/cutefish-computer-use) | Pending GitHub creation limit | BSD-3-Clause |
+| text-editor | [upstream](https://github.com/cutefishos/text-editor) | [text-editor](https://github.com/serjykalstryke/text-editor) | BSD-3-Clause |
+| qt-plugins | [upstream](https://github.com/cutefishos/qt-plugins) | [qt-plugins](https://github.com/serjykalstryke/qt-plugins) | BSD-3-Clause |
+| calculator | [upstream](https://github.com/cutefishos/calculator) | [calculator](https://github.com/serjykalstryke/calculator) | BSD-3-Clause |
+| video-player | [upstream](https://github.com/cutefishos/video-player) | [video-player](https://github.com/serjykalstryke/video-player) | BSD-3-Clause |
+| plymouth-theme | [upstream](https://github.com/cutefishos/plymouth-theme) | [plymouth-theme](https://github.com/serjykalstryke/plymouth-theme) | See upstream files |
+| cutefish-installer | [upstream](https://github.com/cutefishos/cutefish-installer) | [cutefish-installer](https://github.com/serjykalstryke/cutefish-installer) | BSD-3-Clause |
+| packaging | [upstream](https://github.com/cutefishos/packaging) | [packaging](https://github.com/serjykalstryke/packaging) | See upstream files |
+| cutefish-computer-use | [upstream](https://github.com/cutefishos/cutefish-computer-use) | [cutefish-computer-use](https://github.com/serjykalstryke/cutefish-computer-use) | BSD-3-Clause |
 | xdg-desktop-portal-cutefish | [upstream](https://github.com/cutefishos/xdg-desktop-portal-cutefish) | [xdg-desktop-portal-cutefish](https://github.com/serjykalstryke/xdg-desktop-portal-cutefish) | BSD-3-Clause |
 | system-monitor | [upstream](https://github.com/cutefishos/system-monitor) | Pending GitHub creation limit | BSD-3-Clause |
 | calendar | [upstream](https://github.com/cutefishos/calendar) | Pending GitHub creation limit | BSD-3-Clause |
