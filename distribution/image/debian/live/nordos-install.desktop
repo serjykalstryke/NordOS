@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Install NordOS
+Comment=Install NordOS from this live session
+Exec=/usr/bin/nordos-install
+Icon=system-software-install
+Terminal=false
+Type=Application
+Categories=System;

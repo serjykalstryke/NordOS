@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>BYOK Studio</string>
+	<key>CFBundleExecutable</key>
+	<string>launch</string>
+	<key>CFBundleIdentifier</key>
+	<string>byok-studio</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>TypewriterExecution</key>
+	<dict>
+		<key>architecture</key>
+		<string>amd64</string>
+		<key>environment</key>
+		<string>linux</string>
+	</dict>
+	<key>TypewriterID</key>
+	<string>byok-studio</string>
+	<key>TypewriterPublisher</key>
+	<string>BYOK LLC</string>
+	<key>TypewriterSource</key>
+	<dict>
+		<key>package</key>
+		<string>byok-studio</string>
+		<key>provider</key>
+		<string>debian</string>
+		<key>url</key>
+		<string>https://byok.io/studio/desktop</string>
+	</dict>
+	<key>TypewriterSummary</key>
+	<string>Manuscripts, outlines, and long-form projects.</string>
+</dict>
+</plist>

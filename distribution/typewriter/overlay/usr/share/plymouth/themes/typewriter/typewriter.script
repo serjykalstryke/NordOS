@@ -1,0 +1,22 @@
+Window.SetBackgroundTopColor(0.1804, 0.2039, 0.2510);
+Window.SetBackgroundBottomColor(0.1804, 0.2039, 0.2510);
+
+mark = Image("logo.png");
+sprite = Sprite(mark);
+last_width = 0;
+last_height = 0;
+
+fun refresh () {
+    width = Window.GetWidth();
+    height = Window.GetHeight();
+    if (width != global.last_width || height != global.last_height) {
+        size = height * 0.26;
+        if (size > width * 0.34) size = width * 0.34;
+        if (size < 1) size = 1;
+        sprite.SetImage(mark.Scale(size, size));
+        sprite.SetPosition((width - size) / 2, (height - size) / 2, 0);
+        global.last_width = width;
+        global.last_height = height;
+    }
+}
+Plymouth.SetRefreshFunction(refresh);

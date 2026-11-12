@@ -1,0 +1,19 @@
+Package: nordos-desktop
+Version: 0.1.0
+Architecture: all
+Section: metapackages
+Priority: optional
+Maintainer: David Stinnett <davidstinnett@icloud.com>
+Depends: cutefish-toolkit,
+ cutefish-framework,
+ cutefish-core,
+ cutefish-compositor,
+ cutefish-filemanager,
+ cutefish-settings,
+ cutefish-icon-theme,
+ cutefish-wallpapers,
+ xdg-desktop-portal-cutefish
+Homepage: https://github.com/serjykalstryke/NordOS
+Description: NordOS development desktop baseline
+ Selects the Cutefish toolkit, desktop session, graphical settings,
+ and integration components used as the starting point for NordOS.

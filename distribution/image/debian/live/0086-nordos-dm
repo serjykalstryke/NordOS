@@ -1,0 +1,17 @@
+#!/bin/sh
+# live-config creates the account before this hook. These writes are in RAM.
+set -efu
+username=nordos
+for parameter in $(cat /proc/cmdline); do
+    case "$parameter" in
+        noautologin|live-config.noautologin) exit 0 ;;
+        username=*|live-config.username=*) username=${parameter#*=} ;;
+    esac
+done
+home=$(getent passwd "$username" | cut -d : -f 6)
+[ -n "$home" ] || exit 1
+printf '[Autologin]\nUser=%s\n' "$username" > /etc/cutefish-dm.conf
+group=$(id -gn "$username")
+install -d -o "$username" -g "$group" "$home/Desktop"
+install -m 755 -o "$username" -g "$group" /usr/share/applications/nordos-install.desktop \
+    "$home/Desktop/Install NordOS.desktop"

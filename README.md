@@ -1,10 +1,16 @@
 # NordOS
 
-NordOS Design Bible • First draft • Version 0.2 • November 10, 2026
+[Working state](docs/WORKING_STATE.md) covers the current foundation and the Typewriter USB build.
+
+NordOS Design Bible • First draft • Version 0.3 • November 10, 2026
 
 This README presents the design bible. Standalone copies are available in [Markdown](docs/DESIGN_BIBLE.md) and [Word](docs/NordOS_Design_Bible.docx). Repository setup, component inventory, and license links follow the design sections.
 
+**Current work — system architecture first.** The core is now organized under NordOS's System Library, System Services, Desktop, and Linux Platform source areas, with an extracted power interface and explicit session composition. The [system architecture draft](docs/SYSTEM_ARCHITECTURE.md) maps existing code to those responsibilities and records proposed source and installed-system layouts. It supersedes the first-app-port and package-profile sequencing below. Application porting follows the system foundation. The v0.3 bible remains a design snapshot. [Build the current foundation](docs/BUILDING.md) or inspect the [pinned system composition](distribution/README.md).
+
 ## Purpose and decision status
+
+The [development VM guide](distribution/image/README.md) shows how to run the first bootable foundation and where the Debian and Linux platform dependencies belong.
 
 NordOS aims to be a human-centered desktop operating system whose concepts remain coherent across software sources, execution environments, and eventually kernels. Users should work with directories, files, and complete applications while the system manages the machinery needed to make those applications function.
 
@@ -28,6 +34,10 @@ Function determines structure and interaction. Visual simplicity should come fro
 
 An executable file is not automatically a complete application. A directory containing software may implement an application bundle, but the user-facing application should have a coherent identity beyond its current filesystem location. Conversely, presenting a bundle as one application should not make ordinary user documents disappear into opaque application storage.
 
+**Agreed principle — the application folder.** NordOS adopts `.app` as its bespoke application folder. A bundle may contain a NordOS-native, Linux, Mac, or Windows application. The same application concept applies across those implementations; the folder suffix does not determine which execution environment is required.
+
+**Agreed principle — first class and source agnostic.** The application folder gives an application distinct, first-class status alongside files and directories. Its identity and user-facing behavior should remain coherent regardless of its acquisition source. A source determines how software is acquired, installed, and updated; it does not define what an application is. NordOS preserves source ownership and provenance while presenting the application as a manageable object.
+
 **Proposed architecture.** File Manager understands application bundles as applications while providing an intentional way to inspect their contents. Launchers and file associations refer to registered applications rather than guessed executable paths. Application registration records supported document types, entry points, and available actions.
 
 **Open questions.** Which operations should behave like ordinary file operations for a bundle? When does moving or copying one require installation, validation, or repair? How should scripts, portable tools, services, and command-line utilities appear without misclassifying every executable as a desktop application?
@@ -42,6 +52,12 @@ An executable file is not automatically a complete application. A directory cont
 
 Shared runtimes should have explicit identity and version compatibility rules. Multiple versions may coexist when applications require them. The manager should retain a runtime while any installed application needs it and reclaim it only when it is no longer referenced. An application update must not silently replace another application's required environment.
 
+**Proposed bundle contract.** Build on Cutefish's existing bundle support, extending it with native launch and managed execution environments. A NordOS `.app` should describe its identity, entry point, processor architecture, execution environment, and required private or shared dependencies. A native executable, Windows executable, or Mac executable can occupy the application payload without changing the outer application model. The internal directory names, metadata format, and compatibility markers are not yet finalized.
+
+The proposed installation locations are `/Applications` for shared applications and `~/Applications` for personal applications. A compatible runtime may be managed outside the bundle and referenced explicitly; a Windows bundle need not carry a separate copy of Wine. Mutable application state and user documents remain separate as described in section 6.
+
+Source adapters still own source-specific installation rules. Adopting `.app` does not authorize moving APT, Flatpak, or Snap files out of locations their managers require. How these installations participate in the application-folder model needs an explicit integration design. An imported Mac `.app` also needs validation and a supported execution environment; its suffix alone does not establish that it follows the NordOS bundle contract.
+
 **Proposed lifecycle expectations.** Validate dependencies before registering an installation as ready. Make interrupted operations recoverable. Keep enough installation information to explain what is installed and why. Where a source cannot provide transactional updates or complete ownership records, expose that limitation and offer a supported recovery path rather than claiming stronger guarantees.
 
 **Open questions.** What belongs in the base platform versus a runtime? What version constraints are supported? Who supplies security updates for pinned components? What can be deduplicated safely? When can offline installation or export include every dependency, and what redistribution restrictions apply?
@@ -49,6 +65,8 @@ Shared runtimes should have explicit identity and version compatibility rules. M
 ## 4 Application identity is separate from its source
 
 **Agreed principle.** App Center must not remain locked to APT or .deb files. It should work with the host's appropriate software tools and be able to reach sources such as pip and Homebrew where useful.
+
+The `.app` application-folder model and source agnosticism are complementary. An acquisition format such as `.deb` describes how software arrives and is managed by its source; a NordOS `.app` describes the application object presented by the system. Source adapters connect those concepts without requiring every source to adopt the same archive format or relocate its managed files.
 
 **Requested goal.** Present unified application identity across APT/deb, Flatpak, Snap, AppImage, pip, Homebrew, and future sources. These names describe acquisition or packaging mechanisms, not the application's meaning to the user.
 
@@ -118,6 +136,8 @@ Continue useful upstream desktop, toolkit, shell, App Center, and reliability wo
 
 Record AI interaction rules and prototype intent recognition in search without interrupting direct application launch. Draft the smallest common identity, installation, adapter, and lifecycle contracts. Establish graphical install, launch, update, removal, and error-recovery flows for a representative application. Record design decisions as work reveals constraints.
 
+For the application-folder foundation, the proposed first implementation is one native Cutefish application packaged as a `.app`. Exercise discovery, launch, update, and removal in a baseline Cutefish development environment before extending the model to more applications and compatibility backends. The initial target is a usable NordOS foundation built from baseline Cutefish, rather than an exact replica of David's personal installation.
+
 **Proposed exit criteria.** Two sources can participate without source-specific logic spreading through the interface. Installed applications have traceable ownership and provenance. The graphical lifecycle works, including a failed installation and retained user data after removal.
 
 ### Medium term establish shared application services
@@ -161,6 +181,7 @@ Use these as draft review criteria derived from the goals above. They do not ind
 - Start from the person's task and make ordinary operations complete in the GUI.
 - Make AI native, respect direct user intent, and ground system changes in current state.
 - Preserve directories, files, and applications as understandable, user-controlled concepts.
+- Use `.app` as the application folder across native, Linux, Mac, and Windows implementations.
 - Install complete functionality with explicit dependency ownership.
 - Separate identity, acquisition, execution, and mutable data.
 - Share runtimes deliberately while preserving application compatibility.
@@ -173,7 +194,7 @@ Use these as draft review criteria derived from the goals above. They do not ind
 
 **Identity and trust.** Who allocates stable application IDs? What proves publisher identity and cross-source equivalence? How are forks, editions, channels, and simultaneous installations represented?
 
-**Packaging and ownership.** Is a NordOS bundle initially a manifest over existing installations, a new distribution format, or both? Which dependencies can be shared? How are package-manager ownership conflicts resolved?
+**Packaging and ownership.** What internal layout and metadata identify a NordOS `.app`, and how do imported Mac bundles retain their own conventions? How do existing package-managed installations participate in the application-folder model? Which dependencies can be shared? How are package-manager ownership conflicts resolved?
 
 **Security and updates.** What permission and isolation model applies to each backend? Who updates shared and pinned runtimes? How are vulnerable dependencies, offline installs, and unsupported versions handled?
 
@@ -195,11 +216,11 @@ A decision entry should contain an ID, subject, status, decision owner, date, ra
 
 ### Source record
 
-Primary reference: David's conversation “NordOS Design Philosophy,” conversation ID 6af372c6-4fac-83e9-9a85-98419114f03b. Direct anchors are the goals of clean installation across sources, cohesive cross-platform applications, and early design for kernel replaceability. Additional coverage and the upstream Cutefish priority come from the November 10, 2026 drafting brief. David's subsequent November 10, 2026 direction establishes AI-native operation, optional user engagement, intent-sensitive search and answers, and system awareness for reliable and safe changes as agreed principles. Detailed architecture and phase gates remain proposals unless explicitly labeled otherwise.
+Primary reference: David's conversation “NordOS Design Philosophy,” conversation ID 6af372c6-4fac-83e9-9a85-98419114f03b. Direct anchors are the goals of clean installation across sources, cohesive cross-platform applications, and early design for kernel replaceability. Additional coverage and the upstream Cutefish priority come from the November 10, 2026 drafting brief. David's subsequent November 10, 2026 direction establishes AI-native operation, optional user engagement, intent-sensitive search and answers, and system awareness for reliable and safe changes as agreed principles. Further direction selects baseline Cutefish as the initial NordOS foundation and adopts `.app` as the bespoke application folder for native, Linux, Mac, and Windows software. Detailed architecture and phase gates remain proposals unless explicitly labeled otherwise.
 
 ## Current foundation
 
-This repository is a fork of **[Cutefish core](https://github.com/cutefishos/cutefish-core)**, renamed NordOS. It currently contains the inherited session and system-services code plus the NordOS project documents. The original component instructions are preserved in [README.Cutefish.md](README.Cutefish.md).
+This repository is a fork of **[Cutefish core](https://github.com/cutefishos/cutefish-core)**, renamed NordOS. It contains the reorganized session and system-services code, the initial NordOS platform boundary, source-composition tooling, and project documents. The original component instructions are preserved in [README.Cutefish.md](README.Cutefish.md).
 
 The first-run setup experience, integrated assistant, system-state tools, alternative-desktop integration, and NordOS distribution image are planned work. Their direction is recorded in [docs/VISION.md](docs/VISION.md).
 
@@ -207,10 +228,13 @@ The first-run setup experience, integrated assistant, system-state tools, altern
 
 ## Repository guides
 
+- [Foundation build and verification results](docs/FOUNDATION_STATUS.md)
+- [System architecture and component sorting](docs/SYSTEM_ARCHITECTURE.md)
 - [Standalone design bible](docs/DESIGN_BIBLE.md)
 - [Editable Word design bible](docs/NordOS_Design_Bible.docx)
 
 - [Project vision and incremental replacement strategy](docs/VISION.md)
+- [NordOS system baseline and package profile](docs/SYSTEM_BASELINE.md)
 - [Build baseline and development layout](docs/BUILDING.md)
 - [Upstream history and license inventory](docs/UPSTREAM.md)
 - [Machine-readable component inventory](components.json)

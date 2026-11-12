@@ -2,6 +2,8 @@
 
 Status: proposed implementation sequence, November 10, 2026. Repository acquisition is underway; this is not a completed NordOS image or a completed build.
 
+**Current priority.** Sort system responsibilities into the [NordOS architecture](SYSTEM_ARCHITECTURE.md) before application porting or further package-profile work. The source inventory below records available material. It does not require adopting every repository as a NordOS component.
+
 ## Source acquisition
 
 Nineteen of the original twenty-two repositories are verified GitHub forks under serjykalstryke, with their expected cutefishos parent. Ten forks were added in this attempt: packaging, getting-started, cutefish-installer, icons, text-editor, qt-plugins, calculator, video-player, plymouth-theme, and cutefish-computer-use.
@@ -12,7 +14,9 @@ The current packaging versions file also includes cutefish-webkit 2.54.2. Audit 
 
 ## First deliverable
 
-Produce a reproducible NordOS development image that boots into a usable graphical desktop, identifies itself as NordOS, installs the chosen application set, and preserves ordinary graphical operation without AI. Integrate AI incrementally through the design bible's intent and system-awareness principles. An initial image need not implement kernel replaceability or universal compatibility.
+Establish the System Library, System Services, Desktop, Platform, and data ownership boundaries using selected existing code. Extract a small working platform interface and make session composition explicit. Preserve graphical operation while those responsibilities acquire NordOS implementations. Application porting follows this system foundation.
+
+A subsequent release milestone is a reproducible development image that boots the reorganized system and preserves ordinary graphical operation without AI. Integrate AI through the same observation and action interfaces used by the desktop. An initial image need not implement kernel replaceability or universal compatibility.
 
 ## Keep the working foundation
 
@@ -22,7 +26,7 @@ Keep upstream remotes, history, license files, attribution, protocol identifiers
 
 ## Separate the product composition
 
-Introduce a NordOS package profile rather than treating the inherited cutefish-desktop metapackage as the final product definition. That metapackage currently depends on a complete application set and cutefish-dm. Decide explicitly which applications are defaults, which are optional, and which display manager belongs in the image. Keep existing host login and desktop settings untouched during development.
+The earlier [NordOS package profile](SYSTEM_BASELINE.md) records dependency-selection work. Architectural ownership is now defined by the [system mapping](SYSTEM_ARCHITECTURE.md). Select build packages after the responsibilities and interfaces are clear. Default applications and the image's display manager remain composition choices.
 
 Define independently reviewable changes for branding and session entries; default applications and dock entries; shell layout and search; setup; application services; and AI integration. Remove obsolete UI only when its replacement is available or its capability is intentionally excluded from the product profile.
 
@@ -44,4 +48,4 @@ Build Debian packages from those sources in an isolated Debian 13 environment. D
 6. Build a bootable image from the verified packages; test live boot and installation onto a disposable virtual disk.
 7. Record known limitations and repeat the same checks after each component removal or replacement.
 
-The next engineering milestone is the source-mapped package build and a reproducible VM baseline. No desktop components have been stripped out, no display manager has been changed, and no ISO build has been performed in this acquisition task.
+The initial core reorganization, power interface, and session composition are implemented. The [development VM](../distribution/image/README.md) boots the selected components on Debian 13. The checks cover graphical autologin, File Manager, Settings, Xwayland terminal launch, and wired networking. Installer media, hardware testing, further file-service extraction, and a complete build inside the guest remain open.

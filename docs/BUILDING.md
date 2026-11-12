@@ -1,58 +1,109 @@
-# Development and build baseline
+# Building the NordOS foundation
 
-The first milestone is to reproduce a working Cutefish desktop in a development VM, then prototype the integrated NordOS assistant inside it.
+The core now builds from the NordOS source structure. The selected external Cutefish components remain separately pinned inputs while their responsibilities are gradually extracted. The build produces a staged development system that can be packaged into a [bootable VM disk](../distribution/image/README.md).
 
-The upstream project currently develops and tests against Debian 13. Its complete build instructions, dependency list, component ordering, and session setup are in [cutefishos/getting-started](https://github.com/cutefishos/getting-started). The package and live-image build path is in [cutefishos/packaging](https://github.com/cutefishos/packaging).
+The core, framework, compositor, File Manager, Settings, portal, and resources have been built and staged using the installed toolkit SDK. See [the validation record](FOUNDATION_STATUS.md) for tested revisions, results, and limitations.
 
-## Source layout
-
-Keep component checkouts side by side under their original component directory names. The renamed NordOS repository fills the `cutefish-core` position:
+## Source ownership
 
 ```text
-development/
-  cutefish-toolkit/
-  cutefish-framework/
-  cutefish-core/          # clone of serjykalstryke/NordOS
-  cutefish-compositor/
-  filemanager/
-  settings/
-  terminal/
-  packaging/
-  ...
+system/
+  library/
+    core/                         shared environment helpers and service clients
+    platform/power.h              platform power request contract
+  services/
+    session/                      lifecycle, startup and shutdown policy
+    applications/runtime/         application execution service
+    applications/placement/       shared application-folder authority
+    desktop/                      inherited appearance, power, permission and other services
+    locales/                      locale management
+    privacy/                      device privacy management
+    capture/                      screen recording service
+  desktop/
+    authorization/                graphical authorization agent
+    session/                      selected desktop component roles
+  platform/linux/
+    power.cpp                     logind implementation of power requests
+    process.cpp                   inherited Linux process-launch implementation
+distribution/
+  composition.json                selected external components, roles and source pins
+  compose.py                      source checks, build order and staged installation
 ```
 
-Use the verified fork URLs in `components.json`. Entries still awaiting a fork contain an upstream URL and a pinned starting commit so their original source remains available.
+The initial pass preserves executable names, service names, installed Linux paths, and source attribution. Several inherited services still contain presentation or Linux-specific code. The source structure identifies responsibility, and further interface extractions will narrow those dependencies. The power contract is the first explicit NordOS interface backed by Linux.
 
-For the core checkout:
+## Build and stage the core
+
+Use a Debian 13 development environment with CMake, a C++20 compiler, pkg-config, the Cutefish toolkit and framework development files, and the core development dependencies. These include ICU, Fontconfig, systemd, Wayland and its scanner/protocols, GBM, FFmpeg, libva, libdrm, and PipeWire. The recorder and desktop services are included in the ordinary build. `distribution/compose.py check --only core` reports missing development inputs, with remaining SDK checks handled by CMake.
+
+From the NordOS repository run
 
 ```sh
-git clone https://github.com/serjykalstryke/NordOS.git cutefish-core
-git -C cutefish-core remote add upstream https://github.com/cutefishos/cutefish-core.git
+python3 distribution/compose.py check --only core
+python3 distribution/compose.py build --only core --jobs 4
 ```
 
-## Build order and runtime
+This uses the local working tree and an installed or previously staged toolkit/framework SDK. The installed files are written under `build/system/stage/`. The driver records the source revision, local changes, component roles, and completion in `build/system/records/`. No administrator access is needed for staging.
 
-Follow the upstream build guide for the exact dependency order and commands. The toolkit and its pinned Skia sources come first, followed by the framework and the components that depend on them. The current source build uses `/usr` as its install prefix. The computer-use component uses Cargo; the other application and desktop components use CMake.
+For the equivalent direct CMake build
 
-Start with the ordinary Cutefish session in a VM as the recommended desktop baseline. Add the integrated assistant as an application with a global entry point and an expandable chat window. The selected desktop remains the everyday workspace.
+```sh
+cmake -S . -B build/core -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build build/core --parallel 4
+DESTDIR="$PWD/build/core-stage" cmake --install build/core
+```
 
-Develop conversational first-run desktop/software selection separately from normal desktop use. GNOME and KDE Plasma are intended alternatives; their package selection, session setup, assistant entry point, and application-control integration need their own validation. Keep the assistant's system-state tools separate from desktop-specific adapters so they can be shared across these environments.
+`/usr` is the target system prefix. `DESTDIR` keeps installation inside the development directory. A staged core requires the rest of the selected desktop and Debian runtime services to operate.
 
-## Snap application discovery
+## Compose the essential desktop
 
-Build the toolkit with its Snap integration commit recorded in `components.json`
-(`integration_commit`, a post-baseline change), or a descendant containing that
-change. The historical `baseline_commit` remains the original fork snapshot.
-See [Snap desktop integration](SNAP_SUPPORT.md) for the source change, runtime
-requirements, and validation steps. Changing the core checkout alone does not
-update the toolkit library used by the launcher.
+The [composition driver](../distribution/README.md) brings together the toolkit, framework, local NordOS core, compositor, File Manager, Settings, portal, icons, and wallpapers. It supports explicit source fetching, pinned local source overrides, and individual component builds. Source selection is distinct from the architecture boundaries inside those repositories.
 
-## Distribution tooling
+```sh
+python3 distribution/compose.py plan
+python3 distribution/compose.py fetch
+bash build/system/sources/toolkit/scripts/fetch-skia.sh
+python3 distribution/compose.py check
+python3 distribution/compose.py build --jobs 4
+```
 
-The packaging repository contains Debian package definitions and a Debian live-build ISO configuration. Its existing image configuration consumes upstream Cutefish packages. NordOS package sources, branding, signing, update channels, and image publication still need design and implementation before a NordOS image can be produced.
+Toolkit preparation obtains the pinned Skia source and GN build tool. The build checks that pin and records the GN hash. Full system builds need the development packages listed by each component's upstream Debian recipe, including dependencies that have no pkg-config metadata. The source lock describes the intended composition and must be validated together before it is a release baseline.
 
-The installer repository contains privileged disk-installation code. It belongs to the eventual live-image pipeline; this setup does not run it or change the current laptop's installation.
+## Choose the session implementations
 
-## Validation status
+`system/desktop/session/` defines build-time roles for the compositor, resident file/desktop surface, authorization agent, application runtime, and desktop services. The defaults preserve the inherited Cutefish session. For example, a compatible replacement compositor can be selected with
 
-This repository setup preserves the existing source and records its starting commits. A fresh desktop build, NordOS image build, and conversational-shell implementation have not been performed as part of the fork setup.
+```sh
+cmake -S . -B build/core -DCMAKE_INSTALL_PREFIX=/usr \
+  -DNORDOS_COMPOSITOR=/usr/bin/nordos-compositor
+```
+
+The session startup and login entry use that selection. The other options are `NORDOS_FILE_SURFACE`, `NORDOS_AUTHORIZATION_AGENT`, `NORDOS_APPLICATION_RUNTIME`, and `NORDOS_DESKTOP_SERVICES`. Values are executable names or paths without arguments. Replacements must supply the existing readiness, private Wayland connection, and service interfaces until those contracts are changed deliberately. This is a composition boundary, not arbitrary interchangeability.
+
+## Run the tests
+
+Test projects remain independently configurable. Their current locations are listed in `.github/workflows/build.yml`. GoogleTest is required for most inherited suites. For example
+
+```sh
+cmake -S system/services/session/tests -B build/session-tests -DCMAKE_INSTALL_PREFIX=/usr
+cmake --build build/session-tests --parallel 4
+ctest --test-dir build/session-tests --output-on-failure
+
+cmake -S tests/platform-power -B build/platform-power
+cmake --build build/platform-power --parallel 4
+ctest --test-dir build/platform-power --output-on-failure
+
+cmake -S tests/session-composition -B build/session-composition
+cmake --build build/session-composition --parallel 4
+ctest --test-dir build/session-composition --output-on-failure
+
+python3 -m unittest discover -s distribution -p 'test_*.py' -v
+```
+
+Private D-Bus and Wayland fixtures require permission to create local sockets. They use isolated service instances. The language fixture also needs `en_US.UTF-8` and `en_SG.UTF-8`, which can be generated in a development directory and supplied through `LOCPATH`. Live compositor cases are opt-in through `CUTEFISH_TEST_COMPOSITOR` and start a separate headless instance. GPU-dependent cases may skip if suitable hardware is unavailable. Record skipped cases alongside results.
+
+## Integration still required
+
+Follow the [system architecture](SYSTEM_ARCHITECTURE.md) for further sorting. File Manager is a presentation application over system-owned capabilities. Its current desktop and file-operation coupling needs its own extraction. Shared application identity, managed dependency storage, compatibility providers, and AI context/action interfaces remain later implementation work.
+
+The [Debian image backend](../distribution/image/debian/README.md) provides the initial boot platform and runtime packages. Boot and login are verified separately from staging. Hardware installation, migration, updates, and recovery remain open.

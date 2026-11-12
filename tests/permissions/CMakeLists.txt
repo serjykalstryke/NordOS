@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.22)
 project(permission_prompt_test LANGUAGES CXX)
+include("${CMAKE_CURRENT_LIST_DIR}/../../cmake/NordOSLayout.cmake")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(CutefishToolkit REQUIRED)
 find_package(GTest REQUIRED)
 find_program(DBUS_RUN_SESSION dbus-run-session REQUIRED)
-set(PERMISSIONS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../cutefish-services/permissions)
+set(PERMISSIONS_DIR ${NORDOS_SOURCE_ROOT}/system/services/desktop/permissions)
 # The prompts' D-Bus service and windows, the windows headless.
 add_executable(permission_prompt_test permission_prompt_test.cpp
     ${PERMISSIONS_DIR}/permissionmanager.cpp

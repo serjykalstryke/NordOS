@@ -1,0 +1,15 @@
+#!/bin/sh
+# Calamares runs this inside the selected target filesystem.
+set -eu
+export DEBIAN_FRONTEND=noninteractive
+test -s /etc/fstab
+test -f /usr/src/nordos/CMakeLists.txt
+apt-get -y purge calamares calamares-settings-debian live-boot live-config live-config-systemd
+rm -f /etc/cutefish-dm.conf /etc/sudoers.d/live \
+    /usr/share/applications/nordos-install.desktop /usr/bin/nordos-install \
+    /usr/lib/live/config/0086-nordos-dm \
+    /etc/systemd/system/cutefish-dm.service.d/live.conf
+rm -rf /etc/calamares
+rm -f /usr/lib/nordos/finish-install
+systemctl --root=/ enable cutefish-dm.service NetworkManager.service
+systemctl --root=/ set-default graphical.target

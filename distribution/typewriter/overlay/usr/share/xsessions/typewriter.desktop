@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Typewriter
+Exec=/usr/local/bin/typewriter-session
+Type=Application
+DesktopNames=Typewriter

@@ -1,0 +1,25 @@
+componentName: nordos
+welcomeStyleCalamares: true
+welcomeExpandingLogo: false
+windowExpanding: normal
+windowSize: 800px,580px
+windowPlacement: center
+strings:
+  productName: NordOS Development
+  shortProductName: NordOS
+  version: "0.1"
+  shortVersion: "0.1"
+  versionedName: NordOS Development 0.1
+  shortVersionedName: NordOS 0.1
+  bootloaderEntryName: NordOS
+  productUrl: https://github.com/serjykalstryke/NordOS
+sidebar: widget
+navigation: widget
+images:
+  productLogo: nordos.svg
+  productIcon: nordos.svg
+style:
+  SidebarBackground: "#1d3548"
+  SidebarText: "#ffffff"
+  SidebarTextCurrent: "#ffffff"
+  SidebarBackgroundCurrent: "#355e78"

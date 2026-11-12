@@ -1,9 +1,0 @@
-#!/bin/sh
-# Session management stays in core/session; it supervises cutefish-compositor.
-export XDG_CURRENT_DESKTOP=Cutefish
-export XDG_SESSION_DESKTOP=Cutefish
-export DESKTOP_SESSION=Cutefish
-export XDG_SESSION_TYPE=wayland
-export WAYLAND_DISPLAY=cutefish-0
-unset DISPLAY XAUTHORITY WAYLAND_SOCKET
-exec /usr/bin/cutefish-session "$@"

@@ -1,0 +1,82 @@
+{
+  "format": 1,
+  "name": "NordOS development system",
+  "base": "Debian 13",
+  "components": [
+    {
+      "name": "toolkit",
+      "roles": ["system-library", "platform-client-implementation"],
+      "url": "https://github.com/serjykalstryke/cutefish-toolkit",
+      "revision": "6818997ba8e01907c8f7cdd5f9508f556e4777e9",
+      "requires": [],
+      "tools": ["clang", "clang++", "ninja", "wayland-scanner"],
+      "pkg_config": ["wayland-client >= 1.23", "wayland-egl", "egl", "glesv2", "fontconfig", "xkbcommon", "libsystemd", "icu-uc", "icu-i18n", "libpng", "libwebp", "libwebpdemux", "libtiff-4", "libheif", "libjxl", "libjxl_threads", "freetype2", "harfbuzz", "libjpeg", "zlib", "expat", "wayland-protocols >= 1.39"],
+      "vendor": {"path": "third_party/skia", "revision": "95ee33d7ec7791ab9c071675710a14fe6408ae4f", "prepare": "scripts/fetch-skia.sh"}
+    },
+    {
+      "name": "framework",
+      "roles": ["system-library", "file-services", "platform-service-clients"],
+      "url": "https://github.com/serjykalstryke/cutefish-framework",
+      "revision": "19712540d65ef7c270b4e937e3af674b860a0265",
+      "requires": ["toolkit"],
+      "pkg_config": ["icu-uc", "icu-i18n", "libpng", "libsystemd", "libpipewire-0.3 >= 0.3.65", "libspa-0.2"]
+    },
+    {
+      "name": "core",
+      "roles": ["system-library", "system-services", "desktop-system-views", "platform-linux"],
+      "local": "..",
+      "requires": ["toolkit", "framework"],
+      "tools": ["wayland-scanner"],
+      "pkg_config": ["wayland-client", "wayland-protocols >= 1.39", "libavcodec", "libavformat", "libavutil", "libswscale", "libva", "libdrm", "gbm", "libsystemd", "fontconfig", "icu-uc", "libpipewire-0.3", "libspa-0.2"]
+    },
+    {
+      "name": "compositor",
+      "roles": ["desktop-window-system", "desktop-shell", "platform-linux"],
+      "url": "https://github.com/serjykalstryke/cutefish-compositor",
+      "revision": "97118a8094477ca535b033826f4ed1cf50407bf0",
+      "requires": ["toolkit", "framework"],
+      "tools": ["wayland-scanner"],
+      "pkg_config": ["wayland-server >= 1.23", "wayland-protocols >= 1.39", "libseat", "libdrm", "gbm", "egl", "glesv2", "xkbcommon", "libinput", "libudev", "libpipewire-0.3", "libspa-0.2", "libsystemd", "harfbuzz", "freetype2", "fontconfig", "icu-uc", "xcb", "xcb-composite", "xcb-xfixes", "xcb-shape", "xcb-sync"]
+    },
+    {
+      "name": "filemanager",
+      "roles": ["application-file-manager", "desktop-surface", "file-operation-services"],
+      "url": "https://github.com/serjykalstryke/filemanager",
+      "revision": "8f9da407826f0d27da45c6916a0d98b0cb1a9f53",
+      "requires": ["toolkit", "framework"],
+      "pkg_config": ["icu-uc", "icu-i18n", "fuse3", "libssh", "smbclient", "libmtp", "libudev", "liblzma", "libarchive"]
+    },
+    {
+      "name": "settings",
+      "roles": ["desktop-settings-views"],
+      "url": "https://github.com/serjykalstryke/settings",
+      "revision": "1012d911d0a02932c359076f522947a216467a29",
+      "requires": ["toolkit", "framework"],
+      "pkg_config": ["icu-uc", "expat", "fontconfig", "libpipewire-0.3", "libspa-0.2", "libsystemd", "xcursor", "xkbcommon"]
+    },
+    {
+      "name": "portal",
+      "roles": ["system-services", "platform-desktop-integration"],
+      "url": "https://github.com/serjykalstryke/xdg-desktop-portal-cutefish",
+      "revision": "19765bcce46880e36a8cfb6b7bdcc6bd09076b59",
+      "requires": ["toolkit"],
+      "tools": ["wayland-scanner"],
+      "pkg_config": ["wayland-client", "wayland-protocols >= 1.39", "libdrm", "gbm", "libpipewire-0.3", "libsystemd"]
+    },
+    {
+      "name": "icons",
+      "roles": ["system-resources"],
+      "url": "https://github.com/serjykalstryke/icons",
+      "revision": "a38be51fe7f6a87a9b2bb4928f8d96134a066848",
+      "requires": [],
+      "tools": ["gtk-update-icon-cache"]
+    },
+    {
+      "name": "wallpapers",
+      "roles": ["system-resources"],
+      "url": "https://github.com/cutefishos/wallpapers",
+      "revision": "ba6fbf6bd96536bbd9ef058fcb974b610dc0ca7b",
+      "requires": []
+    }
+  ]
+}

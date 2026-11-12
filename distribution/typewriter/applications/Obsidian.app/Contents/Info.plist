@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>Obsidian</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>net.daringfireball.markdown</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>launch</string>
+	<key>CFBundleIdentifier</key>
+	<string>md.obsidian.Obsidian</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>TypewriterExecution</key>
+	<dict>
+		<key>architecture</key>
+		<string>amd64</string>
+		<key>environment</key>
+		<string>linux</string>
+	</dict>
+	<key>TypewriterID</key>
+	<string>obsidian</string>
+	<key>TypewriterPublisher</key>
+	<string>Obsidian</string>
+	<key>TypewriterSource</key>
+	<dict>
+		<key>package</key>
+		<string>obsidian</string>
+		<key>provider</key>
+		<string>debian</string>
+		<key>url</key>
+		<string>https://obsidian.md/download</string>
+	</dict>
+	<key>TypewriterSummary</key>
+	<string>Markdown notes and linked ideas.</string>
+</dict>
+</plist>

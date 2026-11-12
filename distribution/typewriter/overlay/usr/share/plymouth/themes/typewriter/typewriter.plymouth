@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Typewriter
+Description=Typewriter startup
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/typewriter
+ScriptFile=/usr/share/plymouth/themes/typewriter/typewriter.script

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Cutefish (Wayland)
+Comment=Cutefish desktop session
+Exec=@CMAKE_INSTALL_FULL_BINDIR@/cutefish-wayland-session
+TryExec=@NORDOS_COMPOSITOR@
+Type=Application
+DesktopNames=Cutefish;
+X-GDM-SessionRegisters=true

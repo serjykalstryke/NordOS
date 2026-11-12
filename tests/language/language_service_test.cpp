@@ -15,7 +15,7 @@
 #include "base/file.h"
 #include "base/locale.h"
 #include "base/settings.h"
-#include "common/language_environment.h"
+#include "core/language_environment.h"
 #include "locale/language.h"
 #include "support/wait.h"
 

@@ -1,0 +1,11 @@
+#pragma once
+
+// Build-time composition. Runtime policy and lifecycle remain in the session
+// service. These role names do not grant additional privileges to a process.
+namespace nordos::desktop::session {
+inline constexpr char Compositor[] = "@NORDOS_COMPOSITOR@";
+inline constexpr char FileSurface[] = "@NORDOS_FILE_SURFACE@";
+inline constexpr char AuthorizationAgent[] = "@NORDOS_AUTHORIZATION_AGENT@";
+inline constexpr char ApplicationRuntime[] = "@NORDOS_APPLICATION_RUNTIME@";
+inline constexpr char DesktopServices[] = "@NORDOS_DESKTOP_SERVICES@";
+}

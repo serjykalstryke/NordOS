@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+if ! grep -qw 'boot=live' /proc/cmdline; then
+    echo "The installer only runs from the NordOS live image." >&2
+    exit 1
+fi
+exec sudo -n env DISPLAY="${DISPLAY:?Xwayland is unavailable}" XAUTHORITY="${XAUTHORITY:?}" \
+    QT_QPA_PLATFORM=xcb /usr/bin/calamares

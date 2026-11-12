@@ -1,0 +1,129 @@
+#!/bin/bash
+set -Eeuo pipefail
+cd "$(dirname "$0")/.."
+
+if (( EUID != 0 )); then
+    echo 'Run this inside a Debian 13 amd64 build VM as root.' >&2
+    exit 1
+fi
+
+workspace="$PWD"
+root="$workspace/rootfs"
+iso="$workspace/iso"
+mkdir -p "$root" "$iso/live" "$iso/EFI/BOOT"
+
+cleanup() {
+    for mountpoint in "$root/sys" "$root/proc" "$root/dev"; do
+        if mountpoint -q "$mountpoint"; then umount -R "$mountpoint"; fi
+    done
+}
+trap cleanup EXIT
+
+export DEBIAN_FRONTEND=noninteractive
+if [[ ! -x "$root/bin/bash" ]]; then
+    debootstrap --variant=minbase --components=main,non-free-firmware trixie "$root" https://deb.debian.org/debian
+fi
+
+mount --rbind /dev "$root/dev"
+mount --make-rslave "$root/dev"
+mount -t proc proc "$root/proc"
+mount -t sysfs sys "$root/sys"
+cp -L /etc/resolv.conf "$root/etc/resolv.conf"
+cat > "$root/etc/apt/sources.list" <<'SOURCES'
+deb https://deb.debian.org/debian trixie main non-free-firmware
+deb https://deb.debian.org/debian trixie-updates main non-free-firmware
+deb https://deb.debian.org/debian-security trixie-security main non-free-firmware
+SOURCES
+install -Dm755 /dev/stdin "$root/usr/sbin/policy-rc.d" <<'POLICY'
+#!/bin/sh
+exit 101
+POLICY
+for package in inputs/*.deb; do install -m 0644 "$package" "$root/tmp/"; done
+chroot "$root" apt-get update
+chroot "$root" apt-get -y --no-install-recommends install \
+    linux-image-amd64 zstd live-boot live-boot-initramfs-tools initramfs-tools \
+    systemd-sysv dbus dbus-user-session udev libpam-systemd \
+    plymouth plymouth-themes grub-efi-amd64-bin grub2-common \
+    e2fsprogs dosfstools fdisk rsync sudo python3-gi gir1.2-gtk-3.0 \
+    lightdm openbox xserver-xorg-core xserver-xorg-input-libinput x11-xserver-utils \
+    xserver-xorg-video-fbdev libgl1-mesa-dri libegl-mesa0 \
+    adwaita-icon-theme fonts-dejavu-core fonts-liberation fonts-noto-color-emoji \
+    ca-certificates network-manager polkitd udiskie gvfs \
+    firmware-brcm80211 firmware-intel-graphics intel-microcode \
+    pipewire-audio alsa-utils \
+    /tmp/BYOK-Studio-linux-amd64.deb /tmp/Obsidian-linux-amd64.deb /tmp/Cutefish-Toolkit-amd64.deb
+
+if ! chroot "$root" id writer >/dev/null 2>&1; then
+    chroot "$root" useradd -m -s /bin/bash writer
+fi
+chroot "$root" usermod -s /bin/bash -aG audio,video,render writer
+chroot "$root" passwd -l root
+chroot "$root" passwd -l writer
+chroot "$root" chmod 4755 '/opt/BYOK Studio/chrome-sandbox' /opt/Obsidian/chrome-sandbox
+chroot "$root" install -d -o writer -g writer -m 0755 /home/writer/Documents
+printf 'typewriter\n' > "$root/etc/hostname"
+printf '127.0.0.1 localhost\n127.0.1.1 typewriter\n::1 localhost ip6-localhost\n' > "$root/etc/hosts"
+printf 'LANG=C.UTF-8\n' > "$root/etc/default/locale"
+: > "$root/etc/machine-id"
+ln -sf /etc/machine-id "$root/var/lib/dbus/machine-id"
+
+rsync -a --chown=root:root --chmod=go-w overlay/ "$root/"
+lib="$root/usr/local/lib/typewriter"
+rm -f "$lib/disks.py"
+for module in system/library/*.py; do install -Dm644 "$module" "$lib/library/${module##*/}"; done
+for module in system/platform/linux/*.py; do install -Dm644 "$module" "$lib/platform_linux/${module##*/}"; done
+install -Dm644 system/adapters/sources/debian.py "$lib/adapters/sources/debian.py"
+install -Dm644 system/adapters/execution/linux.py "$lib/adapters/execution/linux.py"
+install -Dm755 system/desktop/installer.py "$root/usr/local/bin/typewriter-installer"
+install -Dm644 system/desktop/installer.css "$root/usr/local/share/typewriter/installer.css"
+install -Dm755 system/services/install.py "$root/usr/local/sbin/typewriter-install"
+install -Dm755 system/services/writing-session.py "$root/usr/local/bin/typewriter-writing-session"
+install -Dm755 system/platform/linux/session "$root/usr/local/bin/typewriter-session"
+mkdir -p "$root/Applications"
+rsync -a --delete --chown=root:root --chmod=go-w applications/ "$root/Applications/"
+python3 distribution/record-app-versions.py "$root"
+
+g++ -std=c++20 -O2 -Isystem/library -isystem "$root/usr/include/cutefish-toolkit" \
+    system/services/power.cpp system/platform/linux/power.cpp \
+    -L"$root/usr/lib/x86_64-linux-gnu" -Wl,--allow-shlib-undefined -lcutefish-toolkit-base \
+    -o "$root/usr/local/bin/typewriter-power"
+chroot "$root" ldd /usr/local/bin/typewriter-power > "$workspace/power-dependencies.log"
+if grep -q 'not found' "$workspace/power-dependencies.log"; then
+    cat "$workspace/power-dependencies.log" >&2
+    exit 1
+fi
+chroot "$root" visudo -c
+chroot "$root" systemctl enable lightdm.service NetworkManager.service
+chroot "$root" systemctl set-default graphical.target
+chroot "$root" systemctl mask getty@.service serial-getty@.service NetworkManager-wait-online.service debug-shell.service
+chroot "$root" plymouth-set-default-theme typewriter
+chroot "$root" update-initramfs -u -k all
+
+kernel="$(find "$root/boot" -maxdepth 1 -type f -name 'vmlinuz-*' -printf '%f\n' | sort -V | tail -n1)"
+version="${kernel#vmlinuz-}"
+cp "$root/boot/$kernel" "$iso/live/vmlinuz"
+cp "$root/boot/initrd.img-$version" "$iso/live/initrd.img"
+chroot "$root" apt-get clean
+for package in inputs/*.deb; do rm -f "$root/tmp/${package##*/}"; done
+rm -f "$root/usr/sbin/policy-rc.d"
+rm -f "$root/var/lib/apt/lists/"*{_Packages,_InRelease}
+find "$root/var/log" -type f -exec truncate -s 0 {} +
+cleanup
+trap - EXIT
+
+rm -f "$iso/live/filesystem.squashfs"
+mksquashfs "$root" "$iso/live/filesystem.squashfs" -comp zstd -Xcompression-level 14 \
+    -noappend -no-progress -processors 4
+touch "$iso/typewriter-boot"
+grub-mkstandalone -O x86_64-efi --locales='' -o "$iso/EFI/BOOT/BOOTX64.EFI" \
+    "boot/grub/grub.cfg=$workspace/distribution/grub.cfg"
+truncate -s 20M "$workspace/efi.img"
+mkfs.vfat -F 16 -n TYPEWRITER "$workspace/efi.img"
+mmd -i "$workspace/efi.img" ::/EFI ::/EFI/BOOT
+mcopy -i "$workspace/efi.img" "$iso/EFI/BOOT/BOOTX64.EFI" ::/EFI/BOOT/BOOTX64.EFI
+
+xorriso -as mkisofs -r -J -V TYPEWRITER -o "$workspace/Typewriter-0.2-amd64.iso" \
+    -partition_offset 16 --protective-msdos-label \
+    -append_partition 2 0xef "$workspace/efi.img" -appended_part_as_gpt \
+    -e '--interval:appended_partition_2:all::' -no-emul-boot "$iso"
+chmod 0644 "$workspace/Typewriter-0.2-amd64.iso"
