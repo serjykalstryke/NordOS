@@ -1,6 +1,15 @@
-# Typewriter 0.2
+# Typewriter 0.3
 
 Typewriter boots into one writing app. The installation USB offers both writing apps for preview and installs the selected app offline. The installed session starts the selected app with no desktop launcher.
+
+
+## Connect for accounts and sync
+
+Plug in an Ethernet adapter for automatic wired networking, or press **Ctrl+Alt+W** (**Control+Option+W** on a Mac keyboard) to open the Network panel. Select a nearby Wi-Fi network, choose **Join Network**, and enter its password when prompted. Typewriter remembers joined networks on the installed system. If the network requires a sign-in page, choose **Open Network Sign-In** in the panel.
+
+Sign in from BYOK Studio's account menu or from Obsidian's **Settings → General → Account**. The writing app can open account, checkout, and network sign-in pages in Firefox ESR when needed. Close that window to return to the app. App sign-in and syncing follow each publisher's account and subscription terms.
+
+The Network panel lives in the Desktop layer. Its System Library interface uses the Linux NetworkManager adapter to scan, join, and save connections. The writing app opens automatically and can work offline.
 
 ## NordOS layer boundaries
 
@@ -35,4 +44,4 @@ sha256sum --check distribution/inputs.sha256
 sudo ./distribution/build
 ```
 
-The resulting file is `Typewriter-0.2-amd64.iso`. Test from USB before installing on hardware. The installer erases the entire selected drive.
+The resulting file is `Typewriter-0.3-amd64.iso`. Test from USB before installing on hardware. The installer erases the entire selected drive.

@@ -1,6 +1,6 @@
 # NordOS working state
 
-This checkpoint contains the NordOS foundation and Typewriter 0.2, a lightweight writing profile for 64-bit UEFI systems. It records the tested foundation based on `80bffb1` and the Typewriter build that reused its power interface. The checkpoint is on the `working-state` branch for continued development.
+This checkpoint contains the NordOS foundation and Typewriter 0.3, a lightweight writing profile for 64-bit UEFI systems. It records the tested foundation based on `80bffb1` and the Typewriter build that reused its power interface. The checkpoint is on the `working-state` branch for continued development.
 
 ## Foundation
 
@@ -14,6 +14,6 @@ The core is organized into the System Library, System Services, Desktop, and Lin
 
 The [Typewriter source](../distribution/typewriter/) contains the offline installer, its BYOK Studio and Obsidian app records, the session launcher, and the Nord-inspired Plymouth theme. The desktop installer uses System Library calls. Installation policy lives in System Services, with separate Debian package, Linux execution, disk, boot, and power implementations. The installer saves one app as the startup app.
 
-The USB preview and offline installation were exercised for both apps in UEFI virtual machines. Each installation booted from its own disk into the selected app. The final installer’s **Shut Down** button also passed. Physical MacBook testing is pending.
+The USB preview and offline installation were exercised for both apps in UEFI virtual machines. Each installation booted from its own disk into the selected app. The final installer’s **Shut Down** button also passed. Typewriter 0.3 adds automatic Ethernet, a Wi-Fi panel on Ctrl+Alt+W, and a browser for account links. Virtual Ethernet and a password-protected Wi-Fi join passed. The BYOK Studio sign-in page loaded in the browser. Physical MacBook testing and signed-in sync are pending.
 
 The personal test ISO is available separately. The public source records the expected package versions and hashes, with downloads obtained directly from the app publishers. [Typewriter build guide](../distribution/typewriter/README.md)

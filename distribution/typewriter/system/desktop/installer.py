@@ -206,7 +206,8 @@ class Installer(Gtk.Window):
             self.refresh_button.hide()
             self.continue_button.hide()
             self.message.set_text(
-                f"{app.name} is ready. Shut down, remove the installation USB, then restart your system."
+                f"{app.name} is ready. Shut down, remove the installation USB, then restart your system. "
+                "Press Ctrl+Alt+W after startup to connect to Wi-Fi."
             )
         return False
 

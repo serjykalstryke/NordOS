@@ -9,6 +9,9 @@
     <keybind key="A-Tab">
       <action name="NextWindow"><dialog>no</dialog></action>
     </keybind>
+    <keybind key="C-A-w">
+      <action name="Execute"><command>/usr/local/bin/typewriter-network</command></action>
+    </keybind>
     <keybind key="C-A-S-q">
       <action name="Execute"><command>/usr/local/bin/typewriter-power poweroff</command></action>
     </keybind>

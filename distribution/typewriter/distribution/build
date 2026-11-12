@@ -48,7 +48,8 @@ chroot "$root" apt-get -y --no-install-recommends install \
     lightdm openbox xserver-xorg-core xserver-xorg-input-libinput x11-xserver-utils \
     xserver-xorg-video-fbdev libgl1-mesa-dri libegl-mesa0 \
     adwaita-icon-theme fonts-dejavu-core fonts-liberation fonts-noto-color-emoji \
-    ca-certificates network-manager polkitd udiskie gvfs \
+    ca-certificates network-manager wpasupplicant gir1.2-nm-1.0 \
+    network-manager-config-connectivity-debian systemd-timesyncd firefox-esr polkitd udiskie gvfs \
     firmware-brcm80211 firmware-intel-graphics intel-microcode \
     pipewire-audio alsa-utils \
     /tmp/BYOK-Studio-linux-amd64.deb /tmp/Obsidian-linux-amd64.deb /tmp/Cutefish-Toolkit-amd64.deb
@@ -75,6 +76,7 @@ for module in system/platform/linux/*.py; do install -Dm644 "$module" "$lib/plat
 install -Dm644 system/adapters/sources/debian.py "$lib/adapters/sources/debian.py"
 install -Dm644 system/adapters/execution/linux.py "$lib/adapters/execution/linux.py"
 install -Dm755 system/desktop/installer.py "$root/usr/local/bin/typewriter-installer"
+install -Dm755 system/desktop/network.py "$root/usr/local/bin/typewriter-network"
 install -Dm644 system/desktop/installer.css "$root/usr/local/share/typewriter/installer.css"
 install -Dm755 system/services/install.py "$root/usr/local/sbin/typewriter-install"
 install -Dm755 system/services/writing-session.py "$root/usr/local/bin/typewriter-writing-session"
@@ -104,6 +106,7 @@ version="${kernel#vmlinuz-}"
 cp "$root/boot/$kernel" "$iso/live/vmlinuz"
 cp "$root/boot/initrd.img-$version" "$iso/live/initrd.img"
 chroot "$root" apt-get clean
+printf '# Managed by NetworkManager\n' > "$root/etc/resolv.conf"
 for package in inputs/*.deb; do rm -f "$root/tmp/${package##*/}"; done
 rm -f "$root/usr/sbin/policy-rc.d"
 rm -f "$root/var/lib/apt/lists/"*{_Packages,_InRelease}
@@ -122,8 +125,8 @@ mkfs.vfat -F 16 -n TYPEWRITER "$workspace/efi.img"
 mmd -i "$workspace/efi.img" ::/EFI ::/EFI/BOOT
 mcopy -i "$workspace/efi.img" "$iso/EFI/BOOT/BOOTX64.EFI" ::/EFI/BOOT/BOOTX64.EFI
 
-xorriso -as mkisofs -r -J -V TYPEWRITER -o "$workspace/Typewriter-0.2-amd64.iso" \
+xorriso -as mkisofs -r -J -V TYPEWRITER -o "$workspace/Typewriter-0.3-amd64.iso" \
     -partition_offset 16 --protective-msdos-label \
     -append_partition 2 0xef "$workspace/efi.img" -appended_part_as_gpt \
     -e '--interval:appended_partition_2:all::' -no-emul-boot "$iso"
-chmod 0644 "$workspace/Typewriter-0.2-amd64.iso"
+chmod 0644 "$workspace/Typewriter-0.3-amd64.iso"

@@ -1,0 +1,12 @@
+polkit.addRule(function(action, subject) {
+    const allowed = [
+        "org.freedesktop.NetworkManager.network-control",
+        "org.freedesktop.NetworkManager.wifi.scan",
+        "org.freedesktop.NetworkManager.enable-disable-wifi",
+        "org.freedesktop.NetworkManager.settings.modify.own"
+    ];
+    if (subject.user === "writer" && subject.local && subject.active &&
+        allowed.indexOf(action.id) >= 0) {
+        return polkit.Result.YES;
+    }
+});
